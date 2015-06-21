@@ -1,8 +1,11 @@
 /**
- * Defines a string trie class
+ * Trie
+ * Bob Urberger
+ * 6/20/2015
+ * Defines a trie class
  * Stores arbitrary strings for lookup, allows for the identification
  * of the typeclass of a matched string.
- * This provides a direct knowledge of parsing structure with each match
+ * Typeclasses of matches provide grammar for the parsing action
  */
 
 #include <string>
@@ -23,20 +26,30 @@ namespace Game {
 
       Node(char elem, std::string tc);
 
-      bool operator ==(Node const& n);
+      Node* AddChild(char elem, std::string tc);
 
-      Node* AddChild(Node n);
+      void DelChild(char elem);
 
-      Node* FindChild(char c);
+      Node* FindChild(char elem);
+
+      std::string GetTypeclass();
 
       ~Node();
   };
 
   class Trie {
       Node* root;
+      void RecursiveDel(std::string key, Node* current_node);
     public:
       Trie();
+
       void Insert(std::string key, std::string typeclass);
+
+      void Delete(std::string key);
+
+      std::string Find(std::string key);
+
+      ~Trie();
   };
 }
 
