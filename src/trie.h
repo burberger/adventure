@@ -39,7 +39,9 @@ namespace Game {
 
   class Trie {
       Node* root;
+
       void RecursiveDel(std::string key, Node* current_node);
+
     public:
       Trie();
 
@@ -47,7 +49,9 @@ namespace Game {
 
       void Delete(std::string key);
 
-      std::string Find(std::string key);
+      Node* Find(std::string key);
+
+      Node* Find(std::string key, Node* head);
 
       ~Trie();
   };

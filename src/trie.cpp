@@ -77,11 +77,8 @@ Node* Node::FindChild(char elem) {
     return NULL;
   }
   Node* temp = child;
-  while (temp->element != elem) {
+  while (temp and temp->element != elem) {
     temp = temp->next_node;
-    if (temp == NULL) {
-      return NULL;
-    }
   }
   return temp;
 }
@@ -115,11 +112,16 @@ void Trie::Insert(std::string key, std::string typeclass) {
     if (match) {
       current_node = match;
     } else {
-      current_node = current_node->AddChild(c, typeclass);
+      current_node = current_node->AddChild(c, "");
     }
   }
+  current_node->AddChild('\0', typeclass);
 }
 
+/**
+ * Recursively deletes a key from the trie
+ * Finds the path to the leaf, then deletes children backwards up the tree
+ */
 void Trie::RecursiveDel(std::string key, Node* current_node) {
   Node* next_node = current_node->FindChild(key[0]);
   if (key != "" and next_node != NULL) {
@@ -132,23 +134,30 @@ void Trie::Delete(std::string key) {
   RecursiveDel(key, root);
 }
 
+Node* Trie::Find(std::string key) {
+  return Find(key, root);
+}
+
 /**
  * Finds a string within the set, returns the typeclass of a match
  */
-std::string Trie::Find(std::string key) {
-  Node* current_node = root;
+Node* Trie::Find(std::string key, Node* head) {
+  Node* current_node = head;
   Node* match;
   for (auto c : key) {
-    //If there's no child, return a null result
     match = current_node->FindChild(c);
     if (!match) {
-      return "";
+      return current_node;
     }
     //Child exists, continue taversing tree
     current_node = match;
   }
-  //Return the match data
-  return match->GetTypeclass();
+  //Return the match terminator if found, otherwise return this node
+  current_node = match->FindChild('\0');
+  if (current_node) {
+    return current_node;
+  }
+  return match;
 }
 
 Trie::~Trie() {
