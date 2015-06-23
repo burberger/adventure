@@ -2,7 +2,7 @@
 #define BOOST_TEST_MODULE trie_test
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include "../src/trie.h"
+#include "../src/trie.hpp"
 
 using namespace std;
 
@@ -12,14 +12,14 @@ using namespace std;
 BOOST_AUTO_TEST_SUITE(Node)
 
 BOOST_AUTO_TEST_CASE(findChild) {
-  Game::Node a('a', "a");
+  Game::Node<string> a('a', "a");
   a.AddChild('b', "b");
   BOOST_CHECK(a.FindChild('b') != NULL);
   BOOST_CHECK(a.FindChild('c') == NULL);
 }
 
 BOOST_AUTO_TEST_CASE(deleteChild) {
-  Game::Node a('a', "a");
+  Game::Node<string> a('a', "a");
   a.AddChild('b', "b");
   a.AddChild('c', "c");
   a.AddChild('d', "d");
@@ -40,37 +40,36 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(Trie)
 
 BOOST_AUTO_TEST_CASE(insertAndFind) {
-  Game::Trie t;
-  t.Insert("lookat", "action");
-  t.Insert("pickup", "action");
-  t.Insert("go", "movement");
-  Game::Node* match = t.Find("look");
-  BOOST_CHECK(match->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("at", match)->GetTypeclass() == "action");
-  BOOST_CHECK(t.Find("look at")->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("look")->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("looker")->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("look at rock")->GetTypeclass() == "");
+  Game::Trie<string> t;
   t.Insert("look", "action");
-  BOOST_CHECK(t.Find("go")->GetTypeclass() == "movement");
-  match = t.Find("pick");
-  BOOST_CHECK(match->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("up", match)->GetTypeclass() == "action");
-  BOOST_CHECK(t.Find("pick up")->GetTypeclass() == "");
+  t.Insert("at", "fluff");
+  t.Insert("pick", "action");
+  t.Insert("go", "movement");
+  t.Insert("up", "fluff");
+  t.Insert("pick", "action");
+  BOOST_CHECK(t.Find("at") == "fluff");
+  BOOST_CHECK(t.Find("look at") == "");
+  BOOST_CHECK(t.Find("look") == "action");
+  BOOST_CHECK(t.Find("looker") == "");
+  BOOST_CHECK(t.Find("look at rock") == "");
+  t.Insert("look", "action");
+  BOOST_CHECK(t.Find("go") == "movement");
+  BOOST_CHECK(t.Find("up") == "fluff");
+  BOOST_CHECK(t.Find("pick up") == "");
 }
 
 BOOST_AUTO_TEST_CASE(insertAndDelete) {
-  Game::Trie t;
+  Game::Trie<string> t;
   t.Insert("north", "direction");
-  BOOST_CHECK(t.Find("north")->GetTypeclass() == "direction");
+  BOOST_CHECK(t.Find("north") == "direction");
   t.Insert("next", "action");
   t.Delete("north");
-  BOOST_CHECK(t.Find("north")->GetTypeclass() == "");
-  BOOST_CHECK(t.Find("next")->GetTypeclass() == "action");
+  BOOST_CHECK(t.Find("north") == "");
+  BOOST_CHECK(t.Find("next") == "action");
   t.Delete("next");
-  BOOST_CHECK(t.Find("next")->GetTypeclass() == "");
+  BOOST_CHECK(t.Find("next") == "");
   t.Insert("next", "direction");
-  BOOST_CHECK(t.Find("next")->GetTypeclass() == "direction");
+  BOOST_CHECK(t.Find("next") == "direction");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
