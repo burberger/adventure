@@ -38,3 +38,13 @@ std::vector<Token>& Parser::ParseLine(std::string line, std::vector<Token> & buf
   return buf;
 }
 
+std::string Parser::MatchRule(std::vector<Token> parsedLine) {
+  std::string* rule = rules.Find(parsedLine.front().grammar);
+  if (!rule) {
+    return "";
+  }
+
+  for (int i = 1; i < parsedLine.size(); ++i) {
+    
+  }
+}

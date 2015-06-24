@@ -31,7 +31,7 @@ class Parser {
 
     std::vector<Token>& ParseLine(std::string line, std::vector<Token> & buf);
 
-    std::string MatchRule(std::vector<Token> grammarSet);
+    std::string MatchRule(std::vector<Token> parsedLine);
 
     ~Parser() {};
 };
