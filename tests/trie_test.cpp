@@ -1,5 +1,3 @@
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE trie_test
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 #include "../src/trie.hpp"
@@ -9,7 +7,7 @@ using namespace std;
 /**
  * Unit tests for node class
  */
-BOOST_AUTO_TEST_SUITE(Node)
+BOOST_AUTO_TEST_SUITE(trie_node)
 
 BOOST_AUTO_TEST_CASE(findChild) {
   Game::Node<string> a('a', "a");
@@ -37,7 +35,7 @@ BOOST_AUTO_TEST_SUITE_END()
 /**
  * Unit tests for Trie class
  */
-BOOST_AUTO_TEST_SUITE(Trie)
+BOOST_AUTO_TEST_SUITE(trie)
 
 BOOST_AUTO_TEST_CASE(insertAndFind) {
   Game::Trie<string> t;
