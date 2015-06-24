@@ -134,4 +134,4 @@ T& Trie<T>::operator[](const std::string & key) {
   return match->GetValue();
 }
 
-} //namespace Game
+} //end namespace Game
