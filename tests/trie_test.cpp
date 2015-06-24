@@ -72,5 +72,17 @@ BOOST_AUTO_TEST_CASE(insertAndDelete) {
   BOOST_CHECK(t.Find("next") == "direction");
 }
 
+BOOST_AUTO_TEST_CASE(bracketOperator) {
+  Game::Trie<int> t;
+  t["hello"] = 5;
+  t["world"] = 7;
+  BOOST_CHECK(t["hello"] == 5);
+  BOOST_CHECK(t["world"] == 7);
+  BOOST_CHECK(t["dne"] == 0);
+  int &a = t["test"];
+  a = 251;
+  BOOST_CHECK(t["test"] == 251);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

@@ -15,22 +15,19 @@ class Node {
   //Character stored in this node of the trie
   char element;
   //Value stored for this key (normally empty except for leaf)
-  T* value;
+  T value;
   //Child linked list from this node
   Node<T>* child;
   //Neighbor node in linked list
   Node<T>* next_node;
 
   public:
-    Node() : element('\0'), value(NULL), child(NULL), next_node(NULL) {};
+    Node() : element('\0'), child(NULL), next_node(NULL) {};
 
-    Node(char elem) : element(elem), value(NULL), child(NULL), next_node(NULL) {};
+    Node(char elem) : element(elem), child(NULL), next_node(NULL) {};
 
     Node(char elem, T val) :
-      element(elem), child(NULL), next_node(NULL)
-  {
-    value = new T(val);
-  };
+      element(elem), value(val), child(NULL), next_node(NULL) {};
 
     Node<T>* AddChild(char elem);
 
@@ -43,7 +40,6 @@ class Node {
     T& GetValue();
 
     ~Node() {
-      delete value;
       delete child;
       delete next_node;
     };
@@ -133,9 +129,9 @@ Node<T>* Node<T>::FindChild(char elem) {
   return temp;
 }
 
-template<typename T>
+template <typename T>
 T& Node<T>::GetValue() {
-  return *value;
+  return value;
 }
 
 } //end namespace Game

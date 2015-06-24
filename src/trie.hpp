@@ -16,9 +16,9 @@ template<typename T>
 class Trie {
     Node<T>* root;
 
-    Node<T>* insertPtr(std::string key, T value);
+    Node<T>* insertPtr(const std::string & key, const T & value);
 
-    Node<T>* findPtr(std::string key);
+    Node<T>* findPtr(const std::string & key);
 
     void recursiveDel(std::string key, Node<T>* current_node);
 
@@ -27,11 +27,11 @@ class Trie {
       root = new Node<T>();
     };
 
-    void Insert(std::string key, T value);
+    void Insert(const std::string & key, const T & value);
 
-    void Delete(std::string key);
+    void Delete(const std::string & key);
 
-    T Find(std::string key);
+    T& Find(const std::string & key);
 
     T& operator[](const std::string & key);
 
@@ -44,7 +44,7 @@ class Trie {
  * Inserts a string into the set, returns pointer to leaf node
  */
 template<typename T>
-Node<T>* Trie<T>::insertPtr(std::string key, T value) {
+Node<T>* Trie<T>::insertPtr(const std::string & key, const T & value) {
   Node<T>* current_node = root;
   Node<T>* match;
   //Walk tree per string characters and insert children as needed
@@ -68,7 +68,7 @@ Node<T>* Trie<T>::insertPtr(std::string key, T value) {
  * Finds a string within the set, returns the typeclass of a match
  */
 template<typename T>
-Node<T>* Trie<T>::findPtr(std::string key) {
+Node<T>* Trie<T>::findPtr(const std::string & key) {
   Node<T>* current_node = root;
   Node<T>* match;
   for (auto c : key) {
@@ -107,17 +107,17 @@ void Trie<T>::recursiveDel(std::string key, Node<T>* current_node) {
  */
 
 template<typename T>
-void Trie<T>::Insert(std::string key, T value) {
+void Trie<T>::Insert(const std::string & key, const T & value) {
   insertPtr(key, value);
 }
 
 template<typename T>
-T Trie<T>::Find(std::string key) {
+T& Trie<T>::Find(const std::string & key) {
   return findPtr(key)->GetValue();
 }
 
 template<typename T>
-void Trie<T>::Delete(std::string key) {
+void Trie<T>::Delete(const std::string & key) {
   recursiveDel(key, root);
 }
 
@@ -127,9 +127,9 @@ void Trie<T>::Delete(std::string key) {
  */
 template<typename T>
 T& Trie<T>::operator[](const std::string & key) {
-  Node<T>* match = Find(key);
-  if (!match) {
-    return Insert(key)->GetValue();
+  Node<T>* match = findPtr(key);
+  if (match == root) {
+    return insertPtr(key, T())->GetValue();
   }
   return match->GetValue();
 }
