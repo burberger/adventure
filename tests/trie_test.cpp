@@ -54,6 +54,7 @@ BOOST_AUTO_TEST_CASE(insertAndFind) {
   BOOST_CHECK(t.Find("go") == "movement");
   BOOST_CHECK(t.Find("up") == "fluff");
   BOOST_CHECK(t.Find("pick up") == "");
+  BOOST_CHECK(t.Find("") == "");
 }
 
 BOOST_AUTO_TEST_CASE(insertAndDelete) {

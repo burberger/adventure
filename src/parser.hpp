@@ -20,14 +20,14 @@ struct Token {
 class Parser {
   Trie<std::string> dict;
 
-  Trie<std::string*> rules;
+  Trie<std::vector<std::string>*> rules;
 
   public:
     Parser() {};
 
     void AddWord(const std::string & word, const std::string & grammar);
 
-    void AddRule(const std::string & name, std::string* const rule);
+    void AddRule(const std::string & name, std::vector<std::string>* const rule);
 
     std::vector<Token>& ParseLine(std::string line, std::vector<Token> & buf);
 

@@ -70,7 +70,7 @@ Node<T>* Trie<T>::insertPtr(const std::string & key, const T & value) {
 template<typename T>
 Node<T>* Trie<T>::findPtr(const std::string & key) {
   Node<T>* current_node = root;
-  Node<T>* match;
+  Node<T>* match = root;
   for (auto c : key) {
     match = current_node->FindChild(c);
     if (!match) {
@@ -99,7 +99,6 @@ void Trie<T>::recursiveDel(std::string key, Node<T>* current_node) {
   }
   current_node->DelChild(key[0]);
 }
-
 
 /**
  * Public facing functions wrap internal behavior to prevent exposing node
@@ -135,3 +134,4 @@ T& Trie<T>::operator[](const std::string & key) {
 }
 
 } //end namespace Game
+

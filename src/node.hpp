@@ -22,9 +22,15 @@ class Node {
   Node<T>* next_node;
 
   public:
-    Node() : element('\0'), child(NULL), next_node(NULL) {};
+    Node() : element('\0'), child(NULL), next_node(NULL)
+    {
+      value = {};
+    };
 
-    Node(char elem) : element(elem), child(NULL), next_node(NULL) {};
+    Node(char elem) : element(elem), child(NULL), next_node(NULL)
+    {
+      value = {};
+    };
 
     Node(char elem, T val) :
       element(elem), value(val), child(NULL), next_node(NULL) {};
