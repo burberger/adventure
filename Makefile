@@ -4,6 +4,9 @@ TEST_FILES := $(wildcard tests/*.cpp)
 OBJ_FILES := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 CXX_FLAGS := -g -Wall -std=c++11
 
+main: main.cpp $(OBJ_FILES)
+	g++ $(CXX_FLAGS) -o $@ $^
+
 test: $(TEST_FILES) $(OBJ_FILES) $(HPP_FILES)
 	g++ $(CXX_FLAGS) -o $@ $^ -lboost_unit_test_framework
 

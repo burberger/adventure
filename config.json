@@ -1,0 +1,13 @@
+{
+  "words": {
+    "action": ["pick", "attack", "drop", "hide"],
+    "fluff": ["at", "up", "in", "by"],
+    "movement": ["go"],
+    "direction": ["north", "south", "east", "west"]
+  },
+
+  "rules": {
+    "action": ["*fluff", "item"],
+    "movement": ["direction"]
+  }
+}

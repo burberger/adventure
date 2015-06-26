@@ -6,9 +6,10 @@
  * Determines types for words, and checks against ordering rules
  */
 
+#include "../rapidjson/document.h"
+#include "trie.hpp"
 #include <string>
 #include <vector>
-#include "trie.hpp"
 
 namespace Game {
 
@@ -22,6 +23,10 @@ class Parser {
 
   Trie<std::vector<std::string>*> rules;
 
+  std::vector<std::vector<std::string>*> ruleTable;
+
+  void printError(std::string type, std::string grammar, std::string errorMsg);
+
   public:
     Parser() {};
 
@@ -29,11 +34,13 @@ class Parser {
 
     void AddRule(const std::string & name, std::vector<std::string>* const rule);
 
+    bool LoadConfig(rapidjson::Document & config);
+
     std::vector<Token>& ParseLine(std::string line, std::vector<Token> & buf);
 
     std::string MatchRule(std::vector<Token> parsedLine);
 
-    ~Parser() {};
+    ~Parser();
 };
 
 } //end namespace Game
