@@ -40,9 +40,9 @@ void Parser::AddRule(const std::string & name,
  */
 bool Parser::LoadConfig(rapidjson::Document & config) {
   //Check for existence of required objects
-  if (config.HasMember("words") and config.HasMember("rules")) {
+  if (config.HasMember("words") and config.HasMember("grammar")) {
     rapidjson::Value& wordsObj = config["words"];
-    rapidjson::Value& rulesObj = config["rules"];
+    rapidjson::Value& rulesObj = config["grammar"];
 
     if (!wordsObj.IsObject()) {
       printError("words", "", "words must be a json object");
@@ -65,7 +65,7 @@ bool Parser::LoadConfig(rapidjson::Document & config) {
     }
 
     if (!rulesObj.IsObject()) {
-      printError("words", "", "words must be a json object");
+      printError("grammar", "", "grammar must be a json object");
       return false;
     }
 
@@ -73,7 +73,7 @@ bool Parser::LoadConfig(rapidjson::Document & config) {
     for (auto itr = rulesObj.MemberBegin(); itr != rulesObj.MemberEnd(); ++itr) {
       grammar = itr->name.GetString();
       if (!itr->value.IsArray()) {
-        printError("rules", grammar, "Member value should be array");
+        printError("grammar", grammar, "Member value should be array");
         return false;
       }
 
@@ -85,8 +85,11 @@ bool Parser::LoadConfig(rapidjson::Document & config) {
       ruleTable.push_back(rule);
       rules.Insert(grammar, rule);
     }
+    //Successful build of parser data
+    return true;
   }
-  std::cerr << "Error: parser rules not found!" << std::endl;
+  std::cerr << "Error: Missing or misnamed parser ruleset, please make sure you have";
+  std::cerr << " a word list and a grammar set" << std::endl;
   return false;
 }
 
