@@ -5,6 +5,13 @@
 #include <iostream>
 #include <cstdio>
 
+#ifdef __APPLE__
+#include <editline/readline.h>
+#else
+#include <readline/readline.h>
+#include <readline/history.h>
+#endif
+
 using namespace rapidjson;
 
 Document parseFile(std::string filename) {
@@ -31,6 +38,31 @@ Document parseFile(std::string filename) {
 int main(int argc, char const* argv[]) {
   Document config =  parseFile("config.json");
   Game::Parser parser;
+  Game::Trie<int> StateTable;
+  std::vector<Game::Token> words;
   parser.LoadConfig(config);
+
+  if (config.HasMember("title")) {
+    std::cout << config["title"].GetString() << std::endl;
+  }
+ 
+  // Game loop
+  while (true) {
+    std::string input = readline("> ");
+    if (input == "") {
+      continue;
+    }
+
+    add_history(input.c_str());
+
+    parser.ParseLine(input, words);
+    std::string match = parser.MatchRule(words);
+    for (auto w : words) {
+      std::cout << w.word << ": " << w.grammar << std::endl;
+    }
+    std::cout << "Rule: " << match << std::endl;
+    words.clear();
+  }
+  std::cout << "Game Over" << std::endl;
   return 0;
 }
