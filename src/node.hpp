@@ -8,6 +8,9 @@
 
 #include <string>
 
+#ifndef GAME_NODE_HPP
+#define GAME_NODE_HPP
+
 namespace Game {
 
 template <typename T>
@@ -141,4 +144,6 @@ T& Node<T>::GetValue() {
 }
 
 } //end namespace Game
+
+#endif
 

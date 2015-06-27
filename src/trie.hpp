@@ -10,6 +10,9 @@
 #include <string>
 #include "node.hpp"
 
+#ifndef GAME_TRIE_HPP
+#define GAME_TRIE_HPP
+
 namespace Game {
 
 template<typename T>
@@ -134,4 +137,6 @@ T& Trie<T>::operator[](const std::string & key) {
 }
 
 } //end namespace Game
+
+#endif
 

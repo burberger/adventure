@@ -1,14 +1,76 @@
 {
+  "title": "Welcome to Adventure!\nType 'help' for how to play",
+
   "words": {
-    "action": ["pick", "attack", "drop", "hide"],
-    "preposition": ["at", "up", "in", "by"],
-    "movement": ["go"],
+    "introspect": ["inspect", "look"],
+    "action": ["use", "pull", "push"],
+    "attack": ["attack", "fight", "kill", "stab", "smash", "beat", "cut"],
+    "add_inventory": ["pick", "take", "grab"],
+    "del_inventory": ["drop", "throw", "leave"],
+    "view_inventory": ["inventory", "i"],
+    "preposition": ["at", "up", "in", "by", "on", "around", "to", "for", 
+      "with", "on", "at", "from", "over", "out", "during", "of", "the"],
+    "movement": ["go", "move", "walk"],
     "direction": ["north", "south", "east", "west"],
-    "item": ["cat"]
+    "room": ["room"],
+    "item": ["cat"],
+    "npc": ["villager"],
+    "help_text": ["help"]
   },
 
   "grammar": {
+    "introspect": ["*preposition", "*item", "*room"],
     "action": ["*preposition", "item"],
+    "attack": ["npc", "*preposition", "*item"],
     "movement": ["direction"]
+  },
+
+  "items": {
+    "lantern": {
+      "description": "An old rusty lantern.",
+      "action": {
+        "*light": 1,
+        "description": "The area is now illuminated."
+      }
+    },
+
+    "key": {
+      "decription": "A simple, large iron key.  Meant for opening a heavy lock.",
+      "action": {
+        "*heavy_lock": 1,
+        "description": "The lock opens smoothly."
+      }
+    },
+
+    "sword": {
+      "description": "A dull and chipped blade.  Heavy enough to hurt something.",
+      "action": {
+        "*weak_lock": 1,
+        "description": "The lock smashes apart."
+      },
+      "weapon": {
+        "damage": [1, 5]
+      }
+    }
+  },
+
+  "dungeon": {
+    "0:0": {
+      "start": true,
+      "description": "You wake up in a room filed with old wooden crates.  You have no idea how you got here.",
+      "neighbors": ["0:1", "0:-1", "-1:0", "1:0"],
+      "items": ["lantern"]
+    },
+
+    "0:1": {
+      "description": {
+       "light": ["The room is pitch black.  You can hear something shuffling in the corner.",
+         "There is a perfectly average looking villager standing in the corner.  He stares at you blankly."]
+      },
+      "neighbors": ["0:2", "0:0", "-1:1", null],
+      "state": {
+        "light": 0
+      }
+    }
   }
 }
