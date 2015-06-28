@@ -42,8 +42,9 @@ int main(int argc, char const* argv[]) {
   Game::Dungeon dungeon;
   std::vector<Game::Token> words;
   parser.LoadConfig(config);
-  dungeon.LoadDungeon(config, parser);
+  std::cout << dungeon.LoadDungeon(config, parser) << std::endl;
   dungeon.PrintItemTable();
+  dungeon.PrintRoomTable();
 
   if (config.HasMember("title")) {
     std::cout << config["title"].GetString() << std::endl;

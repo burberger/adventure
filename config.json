@@ -4,7 +4,7 @@
   "words": {
     "introspect": ["inspect", "look"],
     "action": ["use", "pull", "push"],
-    "attack": ["attack", "fight", "kill", "stab", "smash", "beat", "cut"],
+    "attack": ["attack", "fight", "kill", "stab", "hit"],
     "add_inventory": ["pick", "take", "grab"],
     "del_inventory": ["drop", "throw", "leave"],
     "view_inventory": ["inventory", "i"],
@@ -26,17 +26,17 @@
 
   "items": {
     "lantern": {
-      "description": "An old rusty lantern.",
+      "description": "An old rusty lantern.  Filled with oil, but in very poor condition.",
       "action": {
         "light": 1,
-        "description": "The area is now illuminated."
+        "description": "The area is now illuminated, but the lantern won't stay lit for long."
       }
     },
 
     "key": {
       "description": "A simple, large iron key.  Meant for opening a heavy lock.",
       "action": {
-        "*chest_lock": 1,
+        "chest_lock": 1,
         "description": "The lock opens smoothly."
       }
     },
@@ -44,7 +44,7 @@
     "sword": {
       "description": "A dull and chipped blade.  Heavy enough to hurt something.",
       "action": {
-        "*weak_lock": 1,
+        "weak_lock": 1,
         "description": "The lock smashes apart."
       },
       "damage": [1, 5]
@@ -55,16 +55,27 @@
     "0:0": {
       "start": true,
       "description": "You wake up in a room filed with old wooden crates.  You have no idea how you got here.",
-      "neighbors": ["0:1", "0:-1", "-1:0", "1:0"],
+      "neighbors": {
+        "north": "0:1",
+        "south": "0:-1",
+        "east": "-1:0",
+        "west": "1:0"
+      },
       "items": ["lantern"]
     },
 
     "0:1": {
-      "description": {
-       "light": ["The room is pitch black.  You can hear something shuffling in the corner.",
-         "There is a perfectly average looking villager standing in the corner.  He stares at you blankly."]
+      "description": "The room is pitch black.  You can hear something shuffling in the corner.",
+      "neighbors": {
+        "north": "0:2",
+        "south": "0:0",
+        "east": "-1:1",
+        "west": null
       },
-      "neighbors": ["0:2", "0:0", "-1:1", null],
+      "inspect": {
+        "light": ["You can't see anything.  The shuffling is getting closer.",
+         "There is a perfectly average looking villager standing alone in the room.  He stares at you blankly."]
+      },
       "state": {
         "light": 0
       }

@@ -33,7 +33,8 @@ bool Item::ParseItem(std::string objName, rapidjson::Value & itemObj) {
       damage[0] = dmg[0].GetInt();
       damage[1] = dmg[1].GetInt();
     } else {
-      std::cerr << "Item " << name << " hasiInvalid value for damage!" << std::endl;
+      //Fail to parse if damage is not configured correctly
+      std::cerr << "Item " << name << " has invalid value for damage!" << std::endl;
       return false;
     }
   }

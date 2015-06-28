@@ -35,6 +35,12 @@ class Dungeon {
       }
     }
 
+    void PrintRoomTable() {
+      for (auto room : roomTable) {
+        std::cout << room->GetDescription() << std::endl;
+      }
+    }
+
     ~Dungeon() {};
 };
 

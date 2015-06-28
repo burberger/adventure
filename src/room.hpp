@@ -4,11 +4,13 @@
  * Describes a room class for the game dungeon
  */
 
-#include <string>
-#include <vector>
+#include "../rapidjson/document.h"
 #include "trie.hpp"
 #include "item.hpp"
 #include "parser.hpp"
+#include <string>
+#include <vector>
+#include <iostream>
 
 #ifndef GAME_ROOM_HPP
 #define GAME_ROOM_HPP
@@ -16,30 +18,30 @@
 namespace Game {
 
 class Room {
-  Room* neighbors;
+   Trie<Room*> neighbors;
+
+   Trie<Item*> items;
 
   rapidjson::Value actions;
 
-  rapidjson::Value description;
+  std::string description;
 
   Trie<int> state;
 
   public:
-    Room() {
-      neighbors = new Room[4];
-    };
+    bool ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> itemTable);
 
-    bool ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> items);
+    void AddNeighbor(std::string direction, Room* room);
+
+    Room* GetNeighbor(std::string direction);
 
     Game::Item* TakeItem(std::string item);
+
+    void AddItem(std::string name, Game::Item* item);
 
     std::string DoAction(std::string action, std::vector<Game::Token> line);
 
     std::string GetDescription();
-
-    ~Room() {
-      delete[] neighbors;
-    }
 };
 
 } // end namespace Game

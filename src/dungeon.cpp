@@ -11,8 +11,9 @@ bool Dungeon::loadItems(rapidjson::Document & config, Trie<Item*> & items, Parse
   if (!config.HasMember("items")) {
     return false;
   }
-  rapidjson::Value& itemsObj = config["items"];
+
   //Loop over item set and build the item table
+  rapidjson::Value& itemsObj = config["items"];
   for (auto itr = itemsObj.MemberBegin(); itr != itemsObj.MemberEnd(); ++itr) {
     //Error out on formatting
     if (!itr->value.IsObject()) {
@@ -40,11 +41,12 @@ bool Dungeon::loadItems(rapidjson::Document & config, Trie<Item*> & items, Parse
  * connecting the rooms after they've been parsed
  */
 bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<Item*> & items) {
-  if (!config.HasMember("rooms")) {
+  if (!config.HasMember("dungeon")) {
+    std::cerr << "No dungon present!" << std::endl;
     return false;
   }
 
-  rapidjson::Value& roomsObj = config["rooms"];
+  rapidjson::Value& roomsObj = config["dungeon"];
   for (auto itr = roomsObj.MemberBegin(); itr != roomsObj.MemberEnd(); ++itr) {
     //Error out on formatting
     if (!itr->value.IsObject()) {
@@ -69,5 +71,7 @@ bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<
 bool Dungeon::LoadDungeon(rapidjson::Document & config, Parser & parser) {
   Trie<Item*> items;
   Trie<Room*> rooms;
-  return loadItems(config, items, parser);
+  bool itemResult = loadItems(config, items, parser);
+  bool roomResult = loadRooms(config, rooms, items);
+  return itemResult and roomResult;
 }

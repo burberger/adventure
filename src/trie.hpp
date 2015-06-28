@@ -19,7 +19,7 @@ template<typename T>
 class Trie {
     Node<T>* root;
 
-    Node<T>* insertPtr(const std::string & key, const T & value);
+    Node<T>* insertPtr(std::string key, T value);
 
     Node<T>* findPtr(const std::string & key);
 
@@ -30,13 +30,13 @@ class Trie {
       root = new Node<T>();
     };
 
-    void Insert(const std::string & key, const T & value);
+    void Insert(std::string key, T value);
 
     void Delete(const std::string & key);
 
     T& Find(const std::string & key);
 
-    T& operator[](const std::string & key);
+    T& operator[](std::string key);
 
     ~Trie() {
       delete root;
@@ -47,7 +47,7 @@ class Trie {
  * Inserts a string into the set, returns pointer to leaf node
  */
 template<typename T>
-Node<T>* Trie<T>::insertPtr(const std::string & key, const T & value) {
+Node<T>* Trie<T>::insertPtr(std::string key, T value) {
   Node<T>* current_node = root;
   Node<T>* match;
   //Walk tree per string characters and insert children as needed
@@ -109,7 +109,7 @@ void Trie<T>::recursiveDel(std::string key, Node<T>* current_node) {
  */
 
 template<typename T>
-void Trie<T>::Insert(const std::string & key, const T & value) {
+void Trie<T>::Insert(std::string key, T value) {
   insertPtr(key, value);
 }
 
@@ -128,7 +128,7 @@ void Trie<T>::Delete(const std::string & key) {
  * If key doesn't exist, will create it and return a refrence to its value
  */
 template<typename T>
-T& Trie<T>::operator[](const std::string & key) {
+T& Trie<T>::operator[](std::string key) {
   Node<T>* match = findPtr(key);
   if (match == root) {
     return insertPtr(key, T())->GetValue();
