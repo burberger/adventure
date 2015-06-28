@@ -1,5 +1,5 @@
 {
-  "title": "Welcome to Adventure!\nType 'help' for how to play",
+  "title": "Welcome to Adventure!\nType 'help' for info on how to play\n",
 
   "words": {
     "introspect": ["inspect", "look"],
@@ -8,12 +8,11 @@
     "add_inventory": ["pick", "take", "grab"],
     "del_inventory": ["drop", "throw", "leave"],
     "view_inventory": ["inventory", "i"],
-    "preposition": ["at", "up", "in", "by", "on", "around", "to", "for", 
+    "preposition": ["at", "up", "in", "by", "on", "around", "to", "for",
       "with", "on", "at", "from", "over", "out", "during", "of", "the"],
     "movement": ["go", "move", "walk"],
     "direction": ["north", "south", "east", "west"],
     "room": ["room"],
-    "item": ["cat"],
     "npc": ["villager"],
     "help_text": ["help"]
   },
@@ -29,15 +28,15 @@
     "lantern": {
       "description": "An old rusty lantern.",
       "action": {
-        "*light": 1,
+        "light": 1,
         "description": "The area is now illuminated."
       }
     },
 
     "key": {
-      "decription": "A simple, large iron key.  Meant for opening a heavy lock.",
+      "description": "A simple, large iron key.  Meant for opening a heavy lock.",
       "action": {
-        "*heavy_lock": 1,
+        "*chest_lock": 1,
         "description": "The lock opens smoothly."
       }
     },
@@ -48,9 +47,7 @@
         "*weak_lock": 1,
         "description": "The lock smashes apart."
       },
-      "weapon": {
-        "damage": [1, 5]
-      }
+      "damage": [1, 5]
     }
   },
 

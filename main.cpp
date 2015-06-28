@@ -2,6 +2,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "src/parser.hpp"
+#include "src/dungeon.hpp"
 #include <iostream>
 #include <cstdio>
 
@@ -38,14 +39,16 @@ Document parseFile(std::string filename) {
 int main(int argc, char const* argv[]) {
   Document config =  parseFile("config.json");
   Game::Parser parser;
-  Game::Trie<int> StateTable;
+  Game::Dungeon dungeon;
   std::vector<Game::Token> words;
   parser.LoadConfig(config);
+  dungeon.LoadDungeon(config, parser);
+  dungeon.PrintItemTable();
 
   if (config.HasMember("title")) {
     std::cout << config["title"].GetString() << std::endl;
   }
- 
+
   // Game loop
   while (true) {
     std::string input = readline("> ");

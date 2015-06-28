@@ -8,6 +8,7 @@
 #include <vector>
 #include "trie.hpp"
 #include "item.hpp"
+#include "parser.hpp"
 
 #ifndef GAME_ROOM_HPP
 #define GAME_ROOM_HPP
@@ -15,19 +16,33 @@
 namespace Game {
 
 class Room {
-  Trie<Game::Item*> items;
+  Room* neighbors;
 
-  Trie<std::string> actions;
+  rapidjson::Value actions;
+
+  rapidjson::Value description;
+
+  Trie<int> state;
 
   public:
-    Room();
+    Room() {
+      neighbors = new Room[4];
+    };
 
-    //Game::Item GetItem(std::string item);
-    void TakeItem(std::string item);
+    bool ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> items);
 
-    std::string DoAction();
+    Game::Item* TakeItem(std::string item);
+
+    std::string DoAction(std::string action, std::vector<Game::Token> line);
+
+    std::string GetDescription();
+
+    ~Room() {
+      delete[] neighbors;
+    }
 };
 
 } // end namespace Game
 
 #endif
+

@@ -22,7 +22,6 @@ void Parser::printError(std::string type, std::string grammar,
 
 /**
  * Inserters for key-value stores that make up the parsing grammar
- * These are used by the unit test system to manually load words
  */
 void Parser::AddWord(const std::string & word, const std::string & grammar) {
   dict.Insert(word, grammar);

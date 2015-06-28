@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 
+#ifndef GAME_PARSER_HPP
+#define GAME_PARSER_HPP
+
 namespace Game {
 
 struct Token {
@@ -44,3 +47,6 @@ class Parser {
 };
 
 } //end namespace Game
+
+#endif
+
