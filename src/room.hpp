@@ -29,7 +29,7 @@ class Room {
   Trie<int> state;
 
   public:
-    bool ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> itemTable);
+    bool ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> & itemTable);
 
     void AddNeighbor(std::string direction, Room* room);
 

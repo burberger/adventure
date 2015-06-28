@@ -41,7 +41,14 @@ class Dungeon {
       }
     }
 
-    ~Dungeon() {};
+    ~Dungeon() {
+      for (auto r : roomTable) {
+        delete r;
+      }
+      for (auto i : itemTable) {
+        delete i;
+      }
+    };
 };
 
 } //end namespace Game

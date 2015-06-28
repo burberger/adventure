@@ -7,7 +7,7 @@
 
 using namespace Game;
 
-bool Room::ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> itemTable) {
+bool Room::ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> & itemTable) {
   if (roomObj.HasMember("description")) {
     description = roomObj["description"].GetString();
   } else {
