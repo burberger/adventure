@@ -4,6 +4,7 @@
  * Implementation for room class
  */
 #include "room.hpp"
+#include <vector>
 
 using namespace Game;
 
@@ -131,3 +132,4 @@ std::string Room::Inspect() {
   }
   return "Runtime Error: invalid state";
 }
+

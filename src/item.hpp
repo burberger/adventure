@@ -14,6 +14,8 @@
 
 namespace Game {
 
+class Room;
+
 class Item {
   std::string name;
 
@@ -29,6 +31,10 @@ class Item {
     bool ParseItem(std::string name, rapidjson::Value & itemObj);
 
     std::string GetName();
+
+    std::string GetDescription();
+
+    std::string UseItem(Room* room);
 
     ~Item() {
       delete[] damage;

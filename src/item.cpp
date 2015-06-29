@@ -1,12 +1,16 @@
+/**
+ * Bob Urberger
+ * Item function implementations
+ */
 #include "item.hpp"
+#include "room.hpp"
 #include <iostream>
 
 using namespace Game;
 
-std::string Item::GetName() {
-  return name;
-}
-
+/**
+ * Reads item behavior in from the DOM and loads internal state
+ */
 bool Item::ParseItem(std::string objName, rapidjson::Value & itemObj) {
   name = objName;
   //Fetch item description from the dom
@@ -40,3 +44,28 @@ bool Item::ParseItem(std::string objName, rapidjson::Value & itemObj) {
   }
   return true;
 }
+
+std::string Item::GetName() {
+  return name;
+}
+
+std::string Item::GetDescription() {
+  return description;
+}
+
+std::string Item::UseItem(Room* room) {
+  std::string desc;
+  for (auto itr = action.MemberBegin(); itr != action.MemberEnd(); ++itr) {
+    if (itr->name.GetString() != std::string("description")) {
+      if (itr->value.IsInt()) {
+        room->SetState(itr->name.GetString(), itr->value.GetInt());
+      } else {
+        std::cerr << "Error: Invalid type for state update" << std::endl;
+      }
+    } else {
+      desc = itr->value.GetString();
+    }
+  }
+  return desc;
+}
+

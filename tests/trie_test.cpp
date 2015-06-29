@@ -1,5 +1,6 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
+#include <vector>
 #include "../src/trie.hpp"
 
 using namespace std;
@@ -55,6 +56,10 @@ BOOST_AUTO_TEST_CASE(insertAndFind) {
   BOOST_CHECK(t.Find("up") == "fluff");
   BOOST_CHECK(t.Find("pick up") == "");
   BOOST_CHECK(t.Find("") == "");
+  auto list = t.ListKeys();
+  for (auto str : list) {
+    cout << str << endl;
+  }
 }
 
 BOOST_AUTO_TEST_CASE(insertAndDelete) {

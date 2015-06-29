@@ -13,6 +13,9 @@
 
 namespace Game {
 
+template<typename T>
+class Trie;
+
 template <typename T>
 class Node {
   //Character stored in this node of the trie
@@ -23,6 +26,8 @@ class Node {
   Node<T>* child;
   //Neighbor node in linked list
   Node<T>* next_node;
+
+  friend class Trie<T>;
 
   public:
     Node() : element('\0'), child(NULL), next_node(NULL)

@@ -3,8 +3,8 @@
 #include "rapidjson/error/en.h"
 #include "src/parser.hpp"
 #include "src/dungeon.hpp"
+#include "src/player.hpp"
 #include <iostream>
-#include <cstdio>
 
 #ifdef __APPLE__
 #include <editline/readline.h>
@@ -40,18 +40,24 @@ int main(int argc, char const* argv[]) {
   Document config =  parseFile("config.json");
   Game::Parser parser;
   Game::Dungeon dungeon;
+  Game::Player player;
   std::vector<Game::Token> words;
+
   parser.LoadConfig(config);
-  std::cout << dungeon.LoadDungeon(config, parser) << std::endl;
-  dungeon.PrintItemTable();
-  dungeon.PrintRoomTable();
+  if (!dungeon.LoadDungeon(config, parser)) {
+    std::cerr << "Failed to load dungeon from config!" << std::endl;
+    return 1;
+  }
 
   if (config.HasMember("title")) {
     std::cout << config["title"].GetString() << std::endl;
   }
 
+  //place player in dungeon
+  player.Move(dungeon.GetStart());
+
   // Game loop
-  while (true) {
+  while (player.IsAlive()) {
     std::string input = readline("> ");
     if (input == "") {
       continue;
@@ -61,12 +67,19 @@ int main(int argc, char const* argv[]) {
 
     parser.ParseLine(input, words);
     std::string match = parser.MatchRule(words);
-    for (auto w : words) {
-      std::cout << w.word << ": " << w.grammar << std::endl;
+
+    if (match == "view_inventory") {
+      player.PrintInventory();
     }
-    std::cout << "Rule: " << match << std::endl;
+
+    if (match == "introspect") {
+      if (words.back().grammar == "room") {
+        std::cout << player.GetRoom()->Inspect() << std::endl;
+      }
+    }
+
     words.clear();
   }
-  std::cout << "Game Over" << std::endl;
+  std::cout << "Game Over!" << std::endl;
   return 0;
 }

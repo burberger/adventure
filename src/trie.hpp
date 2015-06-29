@@ -7,11 +7,12 @@
  * to a templated datatype.
  */
 
-#include <string>
-#include "node.hpp"
-
 #ifndef GAME_TRIE_HPP
 #define GAME_TRIE_HPP
+
+#include <string>
+#include <vector>
+#include "node.hpp"
 
 namespace Game {
 
@@ -23,7 +24,9 @@ class Trie {
 
     Node<T>* findPtr(const std::string & key);
 
-    void recursiveDel(std::string key, Node<T>* current_node);
+    void recursiveDel(std::string key, Node<T>* currentNode);
+
+    void recursiveTraverse(std::string & prefix, std::vector<std::string> & list, Node<T>* currentNode);
 
   public:
     Trie() {
@@ -33,6 +36,8 @@ class Trie {
     void Insert(std::string key, T value);
 
     void Delete(const std::string & key);
+
+    std::vector<std::string> ListKeys();
 
     T& Find(const std::string & key);
 
@@ -95,12 +100,29 @@ Node<T>* Trie<T>::findPtr(const std::string & key) {
  * Finds the path to the leaf, then deletes children backwards up the tree
  */
 template<typename T>
-void Trie<T>::recursiveDel(std::string key, Node<T>* current_node) {
-  Node<T>* next_node = current_node->FindChild(key[0]);
+void Trie<T>::recursiveDel(std::string key, Node<T>* currentNode) {
+  Node<T>* next_node = currentNode->FindChild(key[0]);
   if (key != "" and next_node != NULL) {
     recursiveDel(key.substr(1), next_node);
   }
-  current_node->DelChild(key[0]);
+  currentNode->DelChild(key[0]);
+}
+
+/**
+ * Recursively traverse the trie and build a list of all keys present
+ */
+template<typename T>
+void Trie<T>::recursiveTraverse(std::string & prefix, std::vector<std::string> & list, Node<T>* currentNode) {
+  if (currentNode == NULL) {
+    list.push_back(prefix);
+  }
+  Node<T>* traverse = currentNode;
+  while (traverse) {
+    prefix.push_back(traverse->element);
+    recursiveTraverse(prefix, list, traverse->child);
+    prefix.pop_back();
+    traverse = traverse->next_node;
+  }
 }
 
 /**
@@ -121,6 +143,14 @@ T& Trie<T>::Find(const std::string & key) {
 template<typename T>
 void Trie<T>::Delete(const std::string & key) {
   recursiveDel(key, root);
+}
+
+template<typename T>
+std::vector<std::string> Trie<T>::ListKeys() {
+  std::string prefix;
+  std::vector<std::string> words;
+  recursiveTraverse(prefix, words, root->child);
+  return words;
 }
 
 /**

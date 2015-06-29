@@ -12,6 +12,7 @@
       "with", "on", "at", "from", "over", "out", "during", "of", "the"],
     "movement": ["go", "move", "walk"],
     "direction": ["north", "south", "east", "west"],
+    "room": ["room"],
     "npc": ["villager"],
     "help_text": ["help"]
   },
