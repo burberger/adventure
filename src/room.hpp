@@ -39,6 +39,10 @@ class Room {
 
     Game::Item* TakeItem(std::string item);
 
+    Game::Item* GetItem(std::string item);
+
+    std::string UseItem(std::string item);
+
     std::string DoAction(std::string action, std::vector<Game::Token> line);
 
     void SetState(std::string key, int val);
@@ -46,6 +50,8 @@ class Room {
     std::string GetDescription();
 
     std::string Inspect();
+
+    std::vector<std::string> ListDoors();
 };
 
 } // end namespace Game

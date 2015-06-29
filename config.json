@@ -92,7 +92,7 @@
     },
 
     "-1:0": {
-      "description": "A suit of armonr is standing on a pedastal in the center of the room. It is holding a sword.",
+      "description": "A suit of armonr is standing on a pedastal in the center of the room.",
       "inspect": "The sword appears to be loose from the display.",
       "neighbors": {
         "west": "0:0"

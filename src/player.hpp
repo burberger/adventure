@@ -27,6 +27,8 @@ class Player {
 
     std::string UseItem(std::string itemName);
 
+    Game::Item* GetItem(std::string name);
+
     void AddInventory(std::string name, Game::Item* item);
 
     void DelInventory(std::string name);

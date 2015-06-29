@@ -98,6 +98,18 @@ Item* Room::TakeItem(std::string item) {
   return itemPtr;
 }
 
+Item* Room::GetItem(std::string item) {
+  return items.Find(item);
+}
+
+std::string Room::UseItem(std::string itemName) {
+  Item* item = items.Find(itemName);
+  if (item) {
+    return item->Use(this);
+  }
+  return "";
+}
+
 /**
  * Stub for room specific action implementation
  */
@@ -131,5 +143,9 @@ std::string Room::Inspect() {
     }
   }
   return "Runtime Error: invalid state";
+}
+
+std::vector<std::string> Room::ListDoors() {
+  return neighbors.ListKeys();
 }
 

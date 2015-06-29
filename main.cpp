@@ -36,6 +36,10 @@ Document parseFile(std::string filename) {
   return d;
 }
 
+void fail() {
+  std::cout << "I don't understand." << std::endl;
+}
+
 int main(int argc, char const* argv[]) {
   Document config =  parseFile("config.json");
   Game::Parser parser;
@@ -57,6 +61,7 @@ int main(int argc, char const* argv[]) {
   player.Move(dungeon.GetStart());
 
   // Game loop
+  Game::Item* item;
   while (player.IsAlive()) {
     std::string input = readline("> ");
     if (input == "") {
@@ -72,11 +77,69 @@ int main(int argc, char const* argv[]) {
       player.PrintInventory();
     }
 
-    if (match == "introspect") {
-      if (words.back().grammar == "room") {
-        std::cout << player.GetRoom()->Inspect() << std::endl;
+    else if (match == "add_inventory") {
+      item = player.GetRoom()->TakeItem(words.back().word);
+      if (item) {
+        player.AddInventory(words.back().word, item);
+      } else {
+        fail();
       }
     }
+
+    else if (match == "del_inventory") {
+      player.DelInventory(words.back().word);
+    }
+
+    else if (match == "introspect") {
+      if (words.back().grammar == "room") {
+        std::cout << player.GetRoom()->Inspect() << std::endl;
+        std::cout << "Door directions:" << std::endl;
+        for (auto door : player.GetRoom()->ListDoors()) {
+          std::cout << door << std::endl;
+        }
+      } else if (words.back().grammar == "item") {
+        item = player.GetItem(words.back().word);
+        if (item) {
+          std::cout << item->GetDescription() << std::endl;
+        } else {
+          item = player.GetRoom()->GetItem(words.back().word);
+          if (item) {
+            std::cout << item->GetDescription() << std::endl;
+          } else {
+            fail();
+          }
+        }
+      }
+    }
+
+    else if (match == "action") {
+      std::string result = player.UseItem(words.back().word);
+      if (result == "") {
+        result = player.GetRoom()->UseItem(words.back().word);
+        if (result == "") {
+          fail();
+        }
+      }
+      std::cout << result << std::endl;
+    }
+
+    else if (match == "movement") {
+      Game::Room* room = player.GetRoom()->GetNeighbor(words.back().word);
+      if (room) {
+        player.Move(room);
+      } else {
+        fail();
+      }
+    }
+
+    else if (match == "help_text") {
+
+    }
+
+    else {
+      fail();
+    }
+
 
     words.clear();
   }

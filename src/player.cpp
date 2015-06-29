@@ -15,9 +15,13 @@ void Player::Move(Room* room) {
 std::string Player::UseItem(std::string itemName) {
   Item* item = inventory.Find(itemName);
   if (item) {
-    return item->UseItem(currentRoom);
+    return item->Use(currentRoom);
   }
   return "";
+}
+
+Item* Player::GetItem(std::string itemName) {
+  return inventory.Find(itemName);
 }
 
 void Player::AddInventory(std::string name, Item* item) {

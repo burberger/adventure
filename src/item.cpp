@@ -53,7 +53,7 @@ std::string Item::GetDescription() {
   return description;
 }
 
-std::string Item::UseItem(Room* room) {
+std::string Item::Use(Room* room) {
   std::string desc;
   for (auto itr = action.MemberBegin(); itr != action.MemberEnd(); ++itr) {
     if (itr->name.GetString() != std::string("description")) {

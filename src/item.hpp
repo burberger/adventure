@@ -34,7 +34,7 @@ class Item {
 
     std::string GetDescription();
 
-    std::string UseItem(Room* room);
+    std::string Use(Room* room);
 
     ~Item() {
       delete[] damage;
