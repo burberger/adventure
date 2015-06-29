@@ -7,12 +7,25 @@
 
 using namespace Game;
 
+/**
+ * Builds all class state on the room from the DOM object representing it
+ * Fetches items from the dungeon item table and adds them to the rooms inventory
+ * Registers per room state and actions
+ */
 bool Room::ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::Item*> & itemTable) {
   if (roomObj.HasMember("description")) {
     description = roomObj["description"].GetString();
   } else {
     std::cerr << "Room " << name << " has no description!" << std::endl;
     return false;
+  }
+
+  if (roomObj.HasMember("inspect")) {
+    inspect = roomObj["inspect"];
+    if (!inspect.IsObject() and !inspect.IsString()) {
+      std::cerr << "Room " << name << " has invlid inspect type!" << std::endl;
+      return false;
+    }
   }
 
   if (roomObj.HasMember("items")) {
@@ -67,6 +80,54 @@ void Room::AddNeighbor(std::string direction, Room* room) {
   neighbors[direction] = room;
 }
 
+Room* Room::GetNeighbor(std::string direction) {
+  return neighbors.Find(direction);
+}
+
+/**
+ * Finds an item in the rooms item table, deletes its entry from the table if
+ * it's found, and returns the pointer to the item
+ */
+Item* Room::TakeItem(std::string item) {
+  Item* itemPtr = items.Find(item);
+  //Matched item, remove from table and return
+  if (itemPtr) {
+    items.Delete(item);
+  }
+  return itemPtr;
+}
+
+/**
+ * Stub for room specific action implementation
+ */
+std::string Room::DoAction(std::string action, std::vector<Game::Token> line) {
+  return action;
+}
+
+void Room::SetState(std::string key, int val) {
+  state[key] = val;
+}
+
 std::string Room::GetDescription() {
   return description;
+}
+
+/**
+ * Return the inspect data based on context in the DOM
+ * and state within the room
+ */
+std::string Room::Inspect() {
+  if (inspect.IsString()) {
+    return inspect.GetString();
+  }
+  auto itr = inspect.MemberBegin();
+  if (itr != inspect.MemberEnd()) {
+    int stateVal = state.Find(itr->name.GetString());
+    if (unsigned(stateVal) < itr->value.Size()) {
+      return itr->value[stateVal].GetString();
+    } else {
+      return "Runtime Error: State out of range";
+    }
+  }
+  return "Runtime Error: invalid state";
 }

@@ -12,6 +12,8 @@
 namespace Game {
 
 class Dungeon {
+  Game::Room* start;
+
   std::vector<Game::Room*> roomTable;
 
   std::vector<Game::Item*> itemTable;
@@ -22,12 +24,14 @@ class Dungeon {
   bool loadRooms(rapidjson::Document & config, Trie<Game::Room*> & rooms,
       Trie<Game::Item*> & items);
 
-  bool connectRooms(Trie<Game::Room*> & rooms);
-
   public:
     Dungeon() {};
 
     bool LoadDungeon(rapidjson::Document & config, Game::Parser & parser);
+
+    Room* GetStart() {
+      return start;
+    }
 
     void PrintItemTable() {
       for (auto item : itemTable) {

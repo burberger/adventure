@@ -37,8 +37,8 @@ bool Dungeon::loadItems(rapidjson::Document & config, Trie<Item*> & items, Parse
 }
 
 /**
- * Same procedure as the item parser, with modifications for item registeration and
- * connecting the rooms after they've been parsed
+ * Similar to item parser, but with modiciations to the table loading system, and
+ * using a second pass over the DOM for connecting the rooms after they've been parsed
  */
 bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<Item*> & items) {
   if (!config.HasMember("dungeon")) {
@@ -58,6 +58,9 @@ bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<
     Room* room = new Room;
     std::string name = itr->name.GetString();
     if (room->ParseRoom(name, itr->value, items)) {
+      if (itr->value.HasMember("start")) {
+        start = room;
+      }
       roomTable.push_back(room);
       rooms.Insert(name, room);
     } else {
@@ -74,13 +77,15 @@ bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<
       std::cerr << itr->name.GetString() << " has no neighbors object!" << std::endl;
       return false;
     }
+
     //Iterate through neighbors key value pairs
     rapidjson::Value& neighborsObj = itr->value["neighbors"];
     for (auto neighborsItr = neighborsObj.MemberBegin(); neighborsItr != neighborsObj.MemberEnd(); ++neighborsItr) {
-      if (!neighborsItr->value.IsString()) {
+      if (!neighborsItr->value.IsString() and !neighborsItr->value.IsNull()) {
         std::cerr << itr->name.GetString() << " has invalid neighbors object!" << std::endl;
         return false;
       }
+
       //Make sure neighbor exists and add to this neighbors object
       if (!neighborsItr->value.IsNull()) {
         Room* neighbor = rooms.Find(neighborsItr->value.GetString());
@@ -92,6 +97,8 @@ bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<
       }
     }
   }
+
+  //Succesful room structure parse
   return true;
 }
 

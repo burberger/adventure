@@ -12,7 +12,6 @@
       "with", "on", "at", "from", "over", "out", "during", "of", "the"],
     "movement": ["go", "move", "walk"],
     "direction": ["north", "south", "east", "west"],
-    "room": ["room"],
     "npc": ["villager"],
     "help_text": ["help"]
   },
@@ -23,6 +22,7 @@
     "attack": ["npc", "*preposition", "*item"],
     "add_inventory": ["*preposition", "item"],
     "del_inventory": ["*preposition", "item"],
+    "view_inventory": [],
     "movement": ["direction"],
     "help_text": []
   },
@@ -57,31 +57,47 @@
   "dungeon": {
     "0:0": {
       "start": true,
-      "description": "You wake up in a room filed with old wooden crates.  You have no idea how you got here.",
+      "description": "You are in a room filled with old wooden crates.  You can hear noises coming from the north.",
+      "inspect": "There is an old rusty lantern nearby.  It looks like it still has oil and flint.",
       "neighbors": {
         "north": "0:1",
         "south": "0:-1",
-        "east": "-1:0",
-        "west": "1:0"
+        "east": "-1:0"
       },
       "items": ["lantern"]
     },
 
     "0:1": {
       "description": "The room is pitch black.  You can hear something shuffling in the corner.",
-      "neighbors": {
-        "north": "0:2",
-        "south": "0:0",
-        "east": "-1:1",
-        "west": null
-      },
       "inspect": {
         "light": ["You can't see anything.  The shuffling is getting closer.",
          "There is a perfectly average looking villager standing alone in the room.  He stares at you blankly."]
       },
+      "neighbors": {
+        "south": "0:0"
+      },
       "state": {
         "light": 0
       }
+    },
+
+    "0:-1": {
+      "description": "There is a small desk on the far side of the room.",
+      "inspect": "There is a key lying on the table.",
+      "neighbors": {
+        "north": "0:0"
+      },
+      "items": ["key"]
+    },
+
+    "-1:0": {
+      "description": "A suit of armonr is standing on a pedastal in the center of the room. It is holding a sword.",
+      "inspect": "The sword appears to be loose from the display.",
+      "neighbors": {
+        "west": "0:0"
+      },
+      "items": ["sword"]
     }
   }
+
 }

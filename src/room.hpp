@@ -24,6 +24,8 @@ class Room {
 
   rapidjson::Value actions;
 
+  rapidjson::Value inspect;
+
   std::string description;
 
   Trie<int> state;
@@ -37,13 +39,13 @@ class Room {
 
     Game::Item* TakeItem(std::string item);
 
-    void AddItem(std::string name, Game::Item* item);
-
     std::string DoAction(std::string action, std::vector<Game::Token> line);
+
+    void SetState(std::string key, int val);
 
     std::string GetDescription();
 
-    std::string GetName();
+    std::string Inspect();
 };
 
 } // end namespace Game
