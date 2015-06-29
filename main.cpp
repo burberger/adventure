@@ -36,8 +36,26 @@ Document parseFile(std::string filename) {
   return d;
 }
 
-void printHelp(Document & config) {
+void printArray(std::string msg, Value & val) {
+  std::cout << msg;
+  for (SizeType i = 0; i < val.Size()-1; ++i) {
+    std::cout << val[i].GetString() << ", ";
+  }
+  std::cout << val[val.Size()-1].GetString() << std::endl;
+}
 
+void printHelp(Document & config) {
+  Value& words = config["words"];
+  printArray("Inspect environment with: ", words["introspect"]);
+  printArray("Use items with: ", words["action"]);
+  printArray("Take items with: ", words["add_inventory"]);
+  printArray("Drop items with: ", words["del_inventory"]);
+  printArray("View inventory with: ", words["view_inventory"]);
+  printArray("Move between rooms with: ", words["movement"]);
+  printArray("Quit the game with: ", words["quit"]);
+
+  std::cout << "Many of these phrases can be used with prepositions, such as 'pick up cat'." << std::endl;
+  std::cout << "All words in a group have equivalent behavior, i.e. take and pick up do the same thing" << std::endl;
 }
 
 void fail() {
@@ -137,7 +155,11 @@ int main(int argc, char const* argv[]) {
     }
 
     else if (match == "help_text") {
-      //printHelp(config);
+      printHelp(config);
+    }
+
+    else if (match == "quit") {
+      break;
     }
 
     else {

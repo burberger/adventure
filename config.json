@@ -14,7 +14,8 @@
     "direction": ["north", "south", "east", "west"],
     "room": ["room"],
     "npc": ["villager"],
-    "help_text": ["help"]
+    "help_text": ["help"],
+    "quit": ["quit", "exit"]
   },
 
   "grammar": {
@@ -25,7 +26,8 @@
     "del_inventory": ["*preposition", "item"],
     "view_inventory": [],
     "movement": ["direction"],
-    "help_text": []
+    "help_text": [],
+    "quit": []
   },
 
   "items": {
