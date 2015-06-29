@@ -36,6 +36,10 @@ Document parseFile(std::string filename) {
   return d;
 }
 
+void printHelp(Document & config) {
+
+}
+
 void fail() {
   std::cout << "I don't understand." << std::endl;
 }
@@ -133,7 +137,7 @@ int main(int argc, char const* argv[]) {
     }
 
     else if (match == "help_text") {
-
+      //printHelp(config);
     }
 
     else {
