@@ -70,3 +70,47 @@ Example:
 }
 ```
 
+The dungeon is specified with the "dungeon" key, and contains rooms.  Each room is specified with a name for the key, and multiple options within a room.  
+
+A room must have a description, and a neighbors table saying how it connects to the rest of the dungeon.  Neighbors are specified by direction and name of room.
+
+A room can optionally contain items, specified as an array of item names.  The entry point into the dungeon is specified with the key "start".
+
+Example:
+```
+"dungeon": {
+  "0:0": {
+    "start": true,
+    "description": "You are in a room filled with old wooden crates.  You can hear noises coming from the north.",
+    "inspect": "There is an old rusty lantern nearby.  It looks like it still has oil and flint.",
+    "neighbors": {
+      "north": "0:1",
+      "south": "0:-1",
+      "east": "-1:0"
+    },
+    "items": ["lantern"]
+  },
+  ...
+}
+```
+
+State contained within the room can be specified by the state key.  The inspection behavior of a room can be specified as either just a string, or dependent on the room state.  The inspect string returned by the room is selected by the the number contained within the state value, so if light is 0, string 0 will print, and so forth.
+
+Example:
+```
+...
+"0:1": {
+  "description": "The room is pitch black.  You can hear something shuffling in the corner.",
+  "inspect": {
+    "light": ["You can't see anything.  The shuffling is getting closer.",
+     "There is a perfectly average looking villager standing alone in the room.  He stares at you blankly."]
+  },
+  "neighbors": {
+    "south": "0:0"
+  },
+  "state": {
+    "light": 0
+  }
+},
+...
+```
