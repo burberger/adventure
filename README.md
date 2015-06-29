@@ -114,3 +114,12 @@ Example:
 },
 ...
 ```
+
+Potential Improvements
+----------------------
+
+* All string key value stores could be implemented as a patricia trie rather than a simple trie to improve memory efficiency at the cost of code complexity.
+
+* The combat system is currently stubbed in, but is relatively trivial to complete within the framework of the engine.
+
+* Provide a way to store state for the dungeon instead of only rooms, so multi-room puzzles can exist
