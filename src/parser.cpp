@@ -24,13 +24,12 @@ void Parser::printError(std::string type, std::string grammar,
  * Inserters for key-value stores that make up the parsing grammar
  */
 void Parser::AddWord(const std::string & word, const std::string & grammar) {
-  dict.Insert(word, grammar);
+  dict[word] = grammar;
 }
 
-void Parser::AddRule(const std::string & name,
-    std::vector<std::string>* const rule)
+void Parser::AddRule(const std::string & name, std::vector<std::string>* const rule)
 {
-  rules.Insert(name, rule);
+  rules[name] = rule;
 }
 
 /**

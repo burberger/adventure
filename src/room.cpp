@@ -63,6 +63,10 @@ bool Room::ParseRoom(std::string name, rapidjson::Value & roomObj, Trie<Game::It
   return true;
 }
 
+void Room::AddNeighbor(std::string direction, Room* room) {
+  neighbors[direction] = room;
+}
+
 std::string Room::GetDescription() {
   return description;
 }

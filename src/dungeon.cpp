@@ -65,6 +65,33 @@ bool Dungeon::loadRooms(rapidjson::Document & config, Trie<Room*> & rooms, Trie<
       return false;
     }
   }
+
+  //Second pass for building room connectivity graph
+  //Loop over each room in the DOM, and then iterate through the connectivity data and
+  //load room pointers as discovered
+  for (auto itr = roomsObj.MemberBegin(); itr != roomsObj.MemberEnd(); ++itr) {
+    if (!itr->value.HasMember("neighbors")) {
+      std::cerr << itr->name.GetString() << " has no neighbors object!" << std::endl;
+      return false;
+    }
+    //Iterate through neighbors key value pairs
+    rapidjson::Value& neighborsObj = itr->value["neighbors"];
+    for (auto neighborsItr = neighborsObj.MemberBegin(); neighborsItr != neighborsObj.MemberEnd(); ++neighborsItr) {
+      if (!neighborsItr->value.IsString()) {
+        std::cerr << itr->name.GetString() << " has invalid neighbors object!" << std::endl;
+        return false;
+      }
+      //Make sure neighbor exists and add to this neighbors object
+      if (!neighborsItr->value.IsNull()) {
+        Room* neighbor = rooms.Find(neighborsItr->value.GetString());
+        if (!neighbor) {
+          std::cerr << itr->name.GetString() << " has nonexistent neighbor!" << std::endl;
+          return false;
+        }
+        rooms[itr->name.GetString()]->AddNeighbor(neighborsItr->name.GetString(), neighbor);
+      }
+    }
+  }
   return true;
 }
 

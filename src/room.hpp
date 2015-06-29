@@ -18,9 +18,9 @@
 namespace Game {
 
 class Room {
-   Trie<Room*> neighbors;
+  Trie<Room*> neighbors;
 
-   Trie<Item*> items;
+  Trie<Item*> items;
 
   rapidjson::Value actions;
 
@@ -42,6 +42,8 @@ class Room {
     std::string DoAction(std::string action, std::vector<Game::Token> line);
 
     std::string GetDescription();
+
+    std::string GetName();
 };
 
 } // end namespace Game

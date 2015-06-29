@@ -21,7 +21,10 @@
     "introspect": ["*preposition", "*item", "*room"],
     "action": ["*preposition", "item"],
     "attack": ["npc", "*preposition", "*item"],
-    "movement": ["direction"]
+    "add_inventory": ["*preposition", "item"],
+    "del_inventory": ["*preposition", "item"],
+    "movement": ["direction"],
+    "help_text": []
   },
 
   "items": {
